@@ -1,0 +1,2 @@
+let CANVAS,
+    CTX;
