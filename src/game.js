@@ -49,10 +49,6 @@ renderFrame = () => {
     CTX.fillStyle = '#fff';
     CTX.fillRect(0, 0, CONFIG.width, CONFIG.height);
 
-    CTX.fillStyle = '#000';
-    CTX.fillRect(0, 0, CONFIG.wallX, CONFIG.height);
-    CTX.fillRect(CONFIG.width, 0, -CONFIG.wallX, CONFIG.height);
-
     CTX.wrap(() => {
         CTX.translate(0, -CAMERA.topY);
 
@@ -62,6 +58,10 @@ renderFrame = () => {
                 Math.random() * CONFIG.shakeFactor * 2 + CONFIG.shakeFactor,
             );
         }
+
+        CTX.fillStyle = '#000';
+        CTX.fillRect(0, CAMERA.topY, CONFIG.wallX, CONFIG.height);
+        CTX.fillRect(CONFIG.width, CAMERA.topY, -CONFIG.wallX, CONFIG.height);
 
         CTX.fillStyle = BACKGROUND_PATTERN;
         CTX.fillRect(CONFIG.wallX, CAMERA.topY, CONFIG.width - CONFIG.wallX * 2, CONFIG.height);

@@ -1,3 +1,15 @@
+class Trail {
+    constructor() {
+        this.startTime = Date.now();
+        this.x = PLAYER.x;
+        this.y = PLAYER.y;
+    }
+
+    get alpha() {
+        return 1 - ((Date.now() - this.startTime) / 1000) / CONFIG.trailFadeDuration;
+    }
+}
+
 class Player {
     constructor() {
         this.x = CONFIG.width / 2;
@@ -5,6 +17,8 @@ class Player {
         this.vY = 0;
         this.direction = 0;
         this.dead = 0;
+
+        this.trails = [];
     }
 
     cycle(elapsed) {
@@ -27,6 +41,14 @@ class Player {
         this.vY += gravity * elapsed;
         this.y += this.vY * elapsed;
         this.y = Math.min(0, this.y);
+
+        while (this.trails.length && this.trails[0].alpha <= 0) {
+            this.trails.shift();
+        }
+
+        if (!this.dead && !this.onWall && this.y !== 0) {
+            this.trails.push(new Trail());
+        }
 
         for (const obstacle of OBSTACLES) {
             if (obstacle.collidesWithPlayer()) {
@@ -69,8 +91,20 @@ class Player {
     }
 
     render() {
+        this.trails.forEach((trail) => {
+            const alpha = trail.alpha;
+            if (alpha > 0) {
+                this.renderPlayer(trail.x, trail.y, alpha);
+            }
+        });
+
+        this.renderPlayer(this.x, this.y, 1);
+    }
+
+    renderPlayer(x, y, alpha) {
         CTX.wrap(() => {
-            CTX.translate(this.x, this.y);
+            CTX.translate(x, y);
+            CTX.globalAlpha = Math.max(0, Math.min(1, alpha));
 
             CTX.fillStyle = '#000';
             CTX.fillRect(

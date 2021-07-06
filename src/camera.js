@@ -8,7 +8,7 @@ class Camera {
     }
 
     cycle(elapsed) {
-        const targetTopY = Math.min(this.topY, PLAYER.y - CONFIG.height * 0.5);
+        const targetTopY = Math.min(this.topY, PLAYER.y - CONFIG.height * 0.7);
 
         const diff = targetTopY - this.topY;
 
