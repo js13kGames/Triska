@@ -1,5 +1,7 @@
 'use strict';
 
+// If I knew how to use webpack I'd probably use that but am lazy
+
 const { minify } = require("terser");
 const { copyFile, mkdir, writeFile, readFile, stat } = require('fs/promises');
 const fs = require('fs');
@@ -17,6 +19,7 @@ const files = [
     'src/obstacle.js',
     'src/menu.js',
     'src/main-menu.js',
+    'src/rng.js',
 ];
 
 (async () => {

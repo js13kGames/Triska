@@ -21,4 +21,6 @@ const CONFIG = {
     'trailFadeDuration': 0.3,
 
     'menuFadeDuration': 0.3,
+
+    'pxPerMeter': 100,
 };

@@ -97,6 +97,14 @@ renderFrame = () => {
         PLAYER.render();
     });
 
+    if (!MENU) {
+        CTX.fillStyle = '#b12a34'
+        CTX.textBaseline = 'top';
+        CTX.textAlign = 'left';
+        CTX.font = '18pt Courier';
+        CTX.fillText(`${PLAYER.distance}M`, CONFIG.wallX + 15, 15);
+    }
+
     if (MENU) CTX.wrap(() => MENU.render());
 };
 
@@ -106,6 +114,7 @@ resetGame = () => {
 };
 
 resetPlayer = () => {
+    RNG = createNumberGenerator(1);
     PLAYER = new Player();
     CAMERA = new Camera();
     OBSTACLES = [];
@@ -122,22 +131,19 @@ cycle = (elapsed) => {
     CAMERA.cycle(elapsed);
 
     if (!OBSTACLES.length || OBSTACLES[OBSTACLES.length - 1].y >= CAMERA.topY) {
-        generateNewObstacles();
+        generateNewObstacle();
     }
 };
 
-generateNewObstacles = () => {
-    let y = Math.min(
-        CAMERA.topY - CONFIG.obstacleRadiusY,
-        CONFIG.obstaclesStartY,
-    );
+generateNewObstacle = () => {
+    const lastObstacleY = OBSTACLES.length ? OBSTACLES[OBSTACLES.length - 1].y : CONFIG.obstaclesStartY;
 
-    for (let i = 0 ; i < 10 ; i++) {
-        OBSTACLES.push(new Obstacle(
-            Math.random() < 0.5 ? CONFIG.wallX : CONFIG.width - CONFIG.wallX,
-            y,
-        ));
+    const difficulty = Math.min(1, OBSTACLES.length / 20);
+    const minSpacing = CONFIG.obstacleRadiusY * 2 + 200 + (1 - difficulty) * 500;
+    const extraSpacing = (1 - difficulty) * 500;
 
-        y -= Math.random() * 300 + 100;
-    }
+    OBSTACLES.push(new Obstacle(
+        RNG() < 0.5 ? CONFIG.wallX : CONFIG.width - CONFIG.wallX,
+        lastObstacleY - (RNG() * minSpacing + extraSpacing),
+    ));
 };

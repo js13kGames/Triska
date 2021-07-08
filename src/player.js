@@ -21,6 +21,8 @@ class Player {
         this.dead = 0;
         this.rotation = 0;
 
+        this.minY = this.y;
+
         this.trails = [];
     }
 
@@ -68,6 +70,8 @@ class Player {
         if (this.y >= CAMERA.bottomY) {
             this.die();
         }
+
+        this.minY = Math.min(this.y, this.minY);
     }
 
     die() {
@@ -153,5 +157,9 @@ class Player {
 
             renderCat(CTX, paws);
         });
+    }
+
+    get distance() {
+        return Math.round(-this.minY / CONFIG.pxPerMeter);
     }
 }
