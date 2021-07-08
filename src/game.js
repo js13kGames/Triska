@@ -115,7 +115,7 @@ renderFrame = () => {
         PLAYER.render();
     });
 
-    if (!MENU) {
+    if (!MENU && PLAYER.distance) {
         CTX.fillStyle = '#b12a34'
         CTX.textBaseline = 'top';
         CTX.textAlign = 'left';
