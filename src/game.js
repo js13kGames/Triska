@@ -1,6 +1,4 @@
 onload = () => {
-    console.log('loaded ya');
-
     CANVAS = can;
     CANVAS.width = CONFIG.width;
     CANVAS.height = CONFIG.height;
