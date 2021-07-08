@@ -94,25 +94,29 @@ class Player {
         this.trails.forEach((trail) => {
             const alpha = trail.alpha;
             if (alpha > 0) {
-                this.renderPlayer(trail.x, trail.y, alpha);
+                this.renderPlayer(trail.x, trail.y, alpha, 1);
             }
         });
 
-        this.renderPlayer(this.x, this.y, 1);
+        this.renderPlayer(this.x, this.y, 1, this.dead ? -1 : 1);
     }
 
-    renderPlayer(x, y, alpha) {
+    renderPlayer(x, y, alpha, scaleY = 1) {
         CTX.wrap(() => {
             CTX.translate(x, y);
+            CTX.scale(1, scaleY);
             CTX.globalAlpha = Math.max(0, Math.min(1, alpha));
 
-            CTX.fillStyle = '#000';
-            CTX.fillRect(
-                -CONFIG.playerRadius,
-                -CONFIG.playerRadius,
-                CONFIG.playerRadius * 2,
-                CONFIG.playerRadius * 2,
-            );
+
+            renderCat(CTX);
+
+            // CTX.fillStyle = '#000';
+            // CTX.fillRect(
+            //     -CONFIG.playerRadius,
+            //     -CONFIG.playerRadius,
+            //     CONFIG.playerRadius * 2,
+            //     CONFIG.playerRadius * 2,
+            // );
         });
     }
 }

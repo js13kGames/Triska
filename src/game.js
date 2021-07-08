@@ -59,10 +59,12 @@ renderFrame = () => {
             );
         }
 
+        // Walls
         CTX.fillStyle = '#000';
         CTX.fillRect(0, CAMERA.topY, CONFIG.wallX, CONFIG.height);
         CTX.fillRect(CONFIG.width, CAMERA.topY, -CONFIG.wallX, CONFIG.height);
 
+        // Background
         CTX.fillStyle = BACKGROUND_PATTERN;
         CTX.fillRect(CONFIG.wallX, CAMERA.topY, CONFIG.width - CONFIG.wallX * 2, CONFIG.height);
 
@@ -70,10 +72,14 @@ renderFrame = () => {
         CTX.fillStyle = '#000';
         CTX.fillRect(0, CONFIG.playerRadius, CONFIG.width, CONFIG.groundHeight);
 
+        // Obstacles
         OBSTACLES.forEach((o) => o.render());
 
+        // Player
         PLAYER.render();
     });
+
+    renderMainMenu();
 };
 
 resetPlayer = () => {
