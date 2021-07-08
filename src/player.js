@@ -129,6 +129,7 @@ class Player {
                     1,
                     trail.rotation,
                     false,
+                    false,
                 );
             }
         });
@@ -146,17 +147,18 @@ class Player {
             this.dead ? -1 : 1,
             this.rotation,
             this.onWall,
+            this.dead,
         );
     }
 
-    renderPlayer(x, y, alpha, scaleX, scaleY, rotation, paws) {
+    renderPlayer(x, y, alpha, scaleX, scaleY, rotation, paws, dead) {
         CTX.wrap(() => {
             CTX.translate(x, y);
             CTX.rotate(rotation);
             CTX.scale(scaleX, scaleY);
             CTX.globalAlpha *= Math.max(0, Math.min(1, alpha));
 
-            renderCat(CTX, paws);
+            renderCat(CTX, paws, dead);
         });
     }
 

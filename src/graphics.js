@@ -16,22 +16,29 @@ createPattern = (width, height, render) => {
     return ctx.createPattern(canvas, 'repeat');
 };
 
-BACKGROUND_PATTERN = createPattern(640, 400, (ctx) => {
+BACKGROUND_PATTERNS = [
+    (ctx) => {
+        ctx.fillRect(100, 0, -10, 20);
+        ctx.fillRect(100, 0, 30, 400);
+    },
+    (ctx) => {
+        ctx.fillRect(200, 0, 20, 400);
+        ctx.fillRect(220, 200, 10, 20);
+    },
+    (ctx) => {
+        ctx.fillRect(300, 0, 40, 400);
+        ctx.fillRect(300, 300, -10, 30);
+    },
+    (ctx) => {
+        ctx.fillRect(400, 0, 20, 400);
+        ctx.fillRect(400, 150, -10, 10);
+    },
+].map((draw) => createPattern(640, 400, (ctx) => {
     ctx.fillStyle = '#bbbcbc';
-    ctx.fillRect(100, 0, -10, 20);
-    ctx.fillRect(100, 0, 30, 400);
+    draw(ctx);
+}));
 
-    ctx.fillRect(200, 0, 20, 400);
-    ctx.fillRect(220, 200, 10, 20);
-
-    ctx.fillRect(300, 0, 40, 400);
-    ctx.fillRect(300, 300, -10, 30);
-
-    ctx.fillRect(400, 0, 20, 400);
-    ctx.fillRect(400, 150, -10, 10);
-});
-
-renderCat = (ctx, paws) => {
+renderCat = (ctx, paws, dead) => {
     const CAT_RADIUS_X = 15;
     const CAT_RADIUS_Y = 20;
     const BANDANA_HEIGHT = 15;
@@ -104,16 +111,26 @@ renderCat = (ctx, paws) => {
             ctx.scale(1, 0.1);
         }
 
-        // ctx.scale(0.5, 1);
+        // White
         ctx.beginPath();
         ctx.arc(0, 0, BANDANA_HEIGHT / 2 - 2, 0, Math.PI * 2);
         ctx.fill();
 
+        // Black
         ctx.fillStyle = '#000';
-        ctx.scale(0.3, 1);
-        ctx.beginPath();
-        ctx.arc(0, 0, BANDANA_HEIGHT / 2 - 2, 0, Math.PI * 2);
-        ctx.fill();
+
+        if (dead) {
+            [Math.PI / 4, -Math.PI / 4].forEach((angle) => ctx.wrap(() => {
+                ctx.fillStyle = '#000';
+                ctx.rotate(angle);
+                ctx.fillRect(-5, -1, 10, 2);
+            }));
+        } else {
+            ctx.scale(0.3, 1);
+            ctx.beginPath();
+            ctx.arc(0, 0, BANDANA_HEIGHT / 2 - 2, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }));
 
     // Snoot

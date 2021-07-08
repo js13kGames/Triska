@@ -69,8 +69,6 @@ renderFrame = () => {
     CTX.fillRect(0, 0, CONFIG.width, CONFIG.height);
 
     CTX.wrap(() => {
-        CTX.translate(0, -CAMERA.topY);
-
         if (Date.now() < CAMERA_SHAKE_END) {
             CTX.translate(
                 Math.random() * CONFIG.shakeFactor * 2 + CONFIG.shakeFactor,
@@ -81,15 +79,27 @@ renderFrame = () => {
         // Walls
         CTX.fillStyle = '#000';
         CTX.fillRect(0, CAMERA.topY, CONFIG.wallX, CONFIG.height);
-        CTX.fillRect(CONFIG.width, CAMERA.topY, -CONFIG.wallX, CONFIG.height);
+        CTX.fillRect(CONFIG.width, 0, -CONFIG.wallX, CONFIG.height);
 
         // Background color
         CTX.fillStyle = Date.now() < CAMERA_SHAKE_END ? '#900' : '#c8caca';
-        CTX.fillRect(CONFIG.wallX, CAMERA.topY, CONFIG.width - CONFIG.wallX * 2, CONFIG.height);
+        CTX.fillRect(CONFIG.wallX, 0, CONFIG.width - CONFIG.wallX * 2, CONFIG.height);
 
         // Background trees
-        CTX.fillStyle = BACKGROUND_PATTERN;
-        CTX.fillRect(CONFIG.wallX, CAMERA.topY, CONFIG.width - CONFIG.wallX * 2, CONFIG.height);
+        BACKGROUND_PATTERNS.forEach((pattern, i) => {
+            CTX.fillStyle = pattern;
+
+            const distance = Math.abs(Math.sin(1 + i * 2));
+
+            const offset = CAMERA.topY * 0.8 * (1 - distance / 4);
+            CTX.wrap(() => {
+                CTX.globalAlpha = 1 - distance / 2;
+                CTX.translate(0, -offset);
+                CTX.fillRect(CONFIG.wallX, offset, CONFIG.width - CONFIG.wallX * 2, CONFIG.height);
+            });
+        });
+
+        CTX.translate(0, -CAMERA.topY);
 
         // Obstacles
         OBSTACLES.forEach((o) => o.render());
@@ -97,6 +107,7 @@ renderFrame = () => {
         DEATHS.forEach(death => renderDeath(CTX, death.x, death.y));
 
         if (MENU) CTX.globalAlpha = 1 - MENU.alpha;
+        if (GAME_DURATION === 0) return;
 
         // Ground
         CTX.fillStyle = '#000';
@@ -120,7 +131,6 @@ renderFrame = () => {
 resetGame = () => {
     resetPlayer();
     MENU = new MainMenu();
-    MENU.fadeStartTime = 0;
 };
 
 resetPlayer = () => {

@@ -5,35 +5,46 @@ class MainMenu extends Menu {
         this.buttons.push(new Button(
             CONFIG.width / 2,
             CONFIG.height / 2 + 50,
-            'PLAY',
+            DEATHS.length ? 'TRY AGAIN' : 'PLAY',
             () => {
                 MENU.dismiss();
                 resetPlayer();
             },
         ));
+
+        this.created = Date.now();
     }
 
     render() {
         super.render();
 
         // CTX.globalAlpha = Math.max(0, (GAME_DURATION - 1) / 0.3);
-        const title = 'TRISKA';
-        CTX.fillStyle = '#000';
-        CTX.textBaseline = 'middle';
-        CTX.textAlign = 'center';
-        CTX.font = 'bold 72pt Courier';
-        CTX.fillText(title, CONFIG.width / 2, CONFIG.height / 3 - 50);
 
-        const titleWidth = CTX.measureText(title);
+        CTX.wrap(() => {
+            CTX.translate(CONFIG.width / 2, CONFIG.height / 3 - 50);
+            CTX.scale(this.alpha, this.alpha);
 
-        CTX.textAlign = 'right';
-        CTX.font = '30pt Courier';
-        CTX.fillText('RELOADED', CONFIG.width / 2 + titleWidth.width / 2, CONFIG.height / 3 - 5);
+            const title = 'TRISKA';
+            CTX.fillStyle = '#000';
+            CTX.textBaseline = 'middle';
+            CTX.textAlign = 'center';
+            CTX.font = 'bold 72pt Courier';
+            CTX.fillText(title, 0, 0);
+
+            const titleWidth = CTX.measureText(title);
+
+            CTX.textAlign = 'right';
+            CTX.font = '30pt Courier';
+            CTX.fillText('RELOADED', titleWidth.width / 2, 45);
+        });
 
         CTX.wrap(() => {
             CTX.translate(CONFIG.width - 120, CONFIG.height - 50);
             CTX.scale(3, 3);
-            renderCat(CTX);
+
+            CTX.translate(0, (1 - this.alpha) * 100);
+
+            renderCat(CTX, false, DEATHS.length > 0 && Date.now() - this.created < 4000);
         });
     }
 }
