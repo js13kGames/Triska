@@ -3,10 +3,12 @@ class Trail {
         this.startTime = Date.now();
         this.x = PLAYER.x;
         this.y = PLAYER.y;
+        this.direction = PLAYER.direction || 1;
+        this.rotation = PLAYER.rotation;
     }
 
     get alpha() {
-        return 1 - ((Date.now() - this.startTime) / 1000) / CONFIG.trailFadeDuration;
+        return 0.25 * (1 - ((Date.now() - this.startTime) / 1000) / CONFIG.trailFadeDuration);
     }
 }
 
@@ -17,6 +19,7 @@ class Player {
         this.vY = 0;
         this.direction = 0;
         this.dead = 0;
+        this.rotation = 0;
 
         this.trails = [];
     }
@@ -41,6 +44,12 @@ class Player {
         this.vY += gravity * elapsed;
         this.y += this.vY * elapsed;
         this.y = Math.min(0, this.y);
+
+        if (this.onWall) {
+            this.rotation = 0;
+        } else {
+            this.rotation += elapsed * Math.PI * 8 * this.direction;
+        }
 
         while (this.trails.length && this.trails[0].alpha <= 0) {
             this.trails.shift();
@@ -94,17 +103,32 @@ class Player {
         this.trails.forEach((trail) => {
             const alpha = trail.alpha;
             if (alpha > 0) {
-                this.renderPlayer(trail.x, trail.y, alpha, 1);
+                this.renderPlayer(
+                    trail.x,
+                    trail.y,
+                    alpha,
+                    trail.direction,
+                    1,
+                    trail.rotation,
+                );
             }
         });
 
-        this.renderPlayer(this.x, this.y, 1, this.dead ? -1 : 1);
+        this.renderPlayer(
+            this.x,
+            this.y,
+            1,
+            this.direction,
+            this.dead ? -1 : 1,
+            this.rotation,
+        );
     }
 
-    renderPlayer(x, y, alpha, scaleY = 1) {
+    renderPlayer(x, y, alpha, scaleX, scaleY, rotation) {
         CTX.wrap(() => {
             CTX.translate(x, y);
-            CTX.scale(1, scaleY);
+            CTX.rotate(rotation);
+            CTX.scale(scaleX, scaleY);
             CTX.globalAlpha = Math.max(0, Math.min(1, alpha));
 
 
