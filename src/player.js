@@ -67,7 +67,9 @@ class Player {
         }
 
         if (!this.dead && !this.onWall && this.y !== 0) {
-            this.trails.push(new Trail());
+            if (!this.trails.length || Date.now() - this.trails[this.trails.length - 1].startTime > 1000 / 30) {
+                this.trails.push(new Trail());
+            }
         }
 
         for (const obstacle of OBSTACLES) {
