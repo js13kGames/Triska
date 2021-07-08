@@ -5,8 +5,9 @@ const CONFIG = {
     'wallX': 40,
     'playerRadius': 10,
     'velocityX': 800,
-    'gravity': 600,
+    'gravity': 1000,
     'jumpVY': 600,
+    'maxVY': 1000,
 
     'groundHeight': 100,
 

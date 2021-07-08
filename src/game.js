@@ -39,6 +39,13 @@ animationFrame = () => {
     requestAnimationFrame(animationFrame);
 };
 
+onmousedown = () => MOUSE_DOWN = true;
+onmouseup = () => MOUSE_DOWN = false;
+
+// Pretend keys are the same as clicking
+onkeydown = () => MOUSE_DOWN = true;
+onkeyup = () => MOUSE_DOWN = false;
+
 onmousemove = (e) => {
     const rect = CANVAS.getBoundingClientRect();
     MOUSE_POSITION = {
@@ -58,7 +65,10 @@ onclick = (e) => {
         const button = MENU.highlightedButton(MOUSE_POSITION);
         if (button) button.onClick();
     } else {
-        PLAYER.jump();
+        // if (!WAIT_FOR_RELEASE) {
+        //     // PLAYER.jump();
+        //     WAIT_FOR_RELEASE = true;
+        // }
     }
 };
 
@@ -145,6 +155,10 @@ cycle = (elapsed) => {
         GAME_DURATION = 0;
     }
 
+    if (!MOUSE_DOWN) {
+        WAIT_FOR_RELEASE = false;
+    }
+
     PLAYER.cycle(elapsed);
     CAMERA.cycle(elapsed);
 
@@ -156,7 +170,7 @@ cycle = (elapsed) => {
 generateNewObstacle = () => {
     const lastObstacleY = OBSTACLES.length ? OBSTACLES[OBSTACLES.length - 1].y : CONFIG.obstaclesStartY;
 
-    const difficulty = Math.min(1, OBSTACLES.length / 20);
+    const difficulty = Math.min(1, OBSTACLES.length / 40);
     const minSpacing = CONFIG.obstacleRadiusY * 2 + 200 + (1 - difficulty) * 500;
     const extraSpacing = (1 - difficulty) * 500;
 

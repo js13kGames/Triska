@@ -39,6 +39,19 @@ class MainMenu extends Menu {
         });
 
         CTX.wrap(() => {
+            CTX.translate(CONFIG.width / 2, CONFIG.height / 2 - 40);
+            CTX.scale(this.alpha, this.alpha);
+
+            if (DEATHS.length) {
+                CTX.fillStyle = '#b12a34';
+                CTX.textBaseline = 'middle';
+                CTX.textAlign = 'center';
+                CTX.font = '24pt Courier';
+                CTX.fillText(`SCORE: ${DEATHS[DEATHS.length - 1].distance}M`, 0, 0);
+            }
+        });
+
+        CTX.wrap(() => {
             CTX.translate(CONFIG.width - 120, CONFIG.height - 50);
             CTX.scale(3, 3);
 

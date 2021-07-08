@@ -41,11 +41,20 @@ class Player {
             gravity *= 4;
         } else if (this.onWall) {
             gravity *= 0.5;
+        } else if (MOUSE_DOWN) {
+            gravity *= 0;
         }
 
         this.vY += gravity * elapsed;
+        this.vY = Math.max(this.vY, -CONFIG.maxVY);
+
         this.y += this.vY * elapsed;
         this.y = Math.min(0, this.y);
+
+        if (MOUSE_DOWN && !WAIT_FOR_RELEASE && (this.onWall || !this.direction)) {
+            this.jump();
+            WAIT_FOR_RELEASE = true;
+        }
 
         if (this.onWall) {
             this.rotation = 0;
@@ -85,7 +94,7 @@ class Player {
 
         CAMERA_SHAKE_END = Date.now() + CONFIG.shakeDuration * 1000;
 
-        DEATHS.push({'x': this.x, 'y': this.y})
+        DEATHS.push({'x': this.x, 'y': this.y, 'distance': this.distance})
         setTimeout(() => MENU = new MainMenu(), 1000);
     }
 
@@ -115,6 +124,7 @@ class Player {
                 CTX.textAlign = 'center';
                 CTX.font = '24pt Courier';
                 CTX.fillText('CLICK TO JUMP', this.x, this.y - 300);
+                CTX.fillText('HOLD TO GO HIGHER', this.x, this.y - 250);
             });
         }
 
