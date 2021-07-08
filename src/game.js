@@ -91,7 +91,7 @@ renderFrame = () => {
 
         // Ground
         CTX.fillStyle = '#000';
-        CTX.fillRect(0, CONFIG.playerRadius, CONFIG.width, CONFIG.groundHeight);
+        CTX.fillRect(0, CONFIG.playerRadius + 10, CONFIG.width, CONFIG.groundHeight);
 
         // Player
         PLAYER.render();

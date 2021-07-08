@@ -79,6 +79,11 @@ renderCat = (ctx, paws) => {
     // Eyes
     [-EYE_GAP, EYE_GAP].forEach((x) => ctx.wrap(() => {
         ctx.translate(x, -CAT_RADIUS_Y + BANDANA_HEIGHT / 2 + 2);
+
+        if (Date.now() % 5000 < 100) {
+            ctx.scale(1, 0.1);
+        }
+
         // ctx.scale(0.5, 1);
         ctx.beginPath();
         ctx.arc(0, 0, BANDANA_HEIGHT / 2 - 2, 0, Math.PI * 2);
