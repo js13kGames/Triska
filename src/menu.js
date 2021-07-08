@@ -10,14 +10,26 @@ class Button {
     }
 
     render() {
+        CTX.translate(this.x, this.y);
+
+        CTX.rotate(Math.sin(Date.now() * Math.PI * 2 / 1000) * Math.PI / 128);
+
+        if (this.contains(MOUSE_POSITION)) {
+            CTX.scale(1.1, 1.1);
+        }
+
         CTX.fillStyle = '#b12a34';
-        CTX.fillRect(this.x - this.radiusX, this.y - this.radiusY, this.radiusX * 2, this.radiusY * 2);
+        CTX.fillRect(-this.radiusX, -this.radiusY, this.radiusX * 2, this.radiusY * 2);
 
         CTX.fillStyle = '#fff';
         CTX.textBaseline = 'middle';
         CTX.textAlign = 'center';
         CTX.font = '24pt Courier';
-        CTX.fillText(this.text, this.x, this.y);
+        CTX.fillText(this.text, 0, 0);
+    }
+
+    contains(position) {
+        return Math.abs(this.x - position.x) < this.radiusX && Math.abs(this.y - position.y) < this.radiusY;
     }
 }
 
@@ -52,6 +64,10 @@ class Menu {
     render() {
         CTX.globalAlpha = this.alpha;
 
-        this.buttons.forEach(b => b.render());
+        this.buttons.forEach(b => CTX.wrap(() => b.render()));
+    }
+
+    highlightedButton(position) {
+        return this.buttons.filter((b) => b.contains(position))[0];
     }
 }

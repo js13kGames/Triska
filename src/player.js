@@ -85,6 +85,7 @@ class Player {
 
         CAMERA_SHAKE_END = Date.now() + CONFIG.shakeDuration * 1000;
 
+        DEATHS.push({'x': this.x, 'y': this.y})
         setTimeout(() => MENU = new MainMenu(), 1000);
     }
 

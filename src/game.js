@@ -41,17 +41,24 @@ animationFrame = () => {
     requestAnimationFrame(animationFrame);
 };
 
+onmousemove = (e) => {
+    const rect = CANVAS.getBoundingClientRect();
+    MOUSE_POSITION = {
+        'x': (e.pageX - rect.left) / rect.width * CONFIG.width,
+        'y': (e.pageY - rect.top) / rect.height * CONFIG.height,
+    };
+
+    if (MENU && MENU.highlightedButton(MOUSE_POSITION)) {
+        CANVAS.style.cursor = 'pointer';
+    } else {
+        CANVAS.style.cursor = 'default';
+    }
+};
+
 onclick = (e) => {
     if (MENU) {
-        const rect = CANVAS.getBoundingClientRect();
-        const x = (e.pageX - rect.left) / rect.width * CONFIG.width;
-        const y = (e.pageY - rect.top) / rect.height * CONFIG.height;
-
-        MENU.buttons.forEach((b) => {
-            if (Math.abs(b.x - x) < b.radiusX && Math.abs(b.y - y) < b.radiusY) {
-                b.onClick();
-            }
-        })
+        const button = MENU.highlightedButton(MOUSE_POSITION);
+        if (button) button.onClick();
     } else {
         PLAYER.jump();
     }
@@ -86,6 +93,8 @@ renderFrame = () => {
 
         // Obstacles
         OBSTACLES.forEach((o) => o.render());
+
+        DEATHS.forEach(death => renderDeath(CTX, death.x, death.y));
 
         if (MENU) CTX.globalAlpha = 1 - MENU.alpha;
 

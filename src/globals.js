@@ -6,4 +6,6 @@ let CANVAS,
     CAMERA_SHAKE_END = 0,
     GAME_DURATION = 0,
     RNG,
+    DEATHS = [],
+    MOUSE_POSITION = {'x': 0, 'y': 0},
     MENU = null;

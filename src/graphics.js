@@ -49,7 +49,38 @@ renderCat = (ctx, paws) => {
         ctx.fillRect(0, 12, CAT_RADIUS_X + 5, 4);
     }
 
+    // Ears
+    ctx.beginPath();
+    ctx.arc(0, -CAT_RADIUS_Y - CAT_RADIUS_X, CAT_RADIUS_X, Math.PI, 0, true);
+    ctx.lineTo(CAT_RADIUS_X, -CAT_RADIUS_Y);
+    ctx.lineTo(-CAT_RADIUS_X, -CAT_RADIUS_Y);
+    ctx.fill();
+
+    // Bandana
+    ctx.fillStyle = ctx.strokeStyle = '#b12a34';
+    ctx.fillRect(-CAT_RADIUS_X, -CAT_RADIUS_Y, CAT_RADIUS_X * 2, BANDANA_HEIGHT);
+
+    // Medallion
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(0, 7, 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(-CAT_RADIUS_X, 0);
+    ctx.lineTo(0, 5);
+    ctx.lineTo(CAT_RADIUS_X, 0);
+    ctx.stroke();
+
+    ctx.fillStyle = '#fff';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.font = '4pt Courier';
+    ctx.fillText('13', 0, 7.5);
+
     // Whiskers
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#000';
     [-1, 1].forEach((sign) => ctx.wrap(() => {
         ctx.translate(0, -CAT_RADIUS_Y + BANDANA_HEIGHT);
 
@@ -62,17 +93,6 @@ renderCat = (ctx, paws) => {
 
         ctx.stroke();
     }));
-
-    // Ears
-    ctx.beginPath();
-    ctx.arc(0, -CAT_RADIUS_Y - CAT_RADIUS_X, CAT_RADIUS_X, Math.PI, 0, true);
-    ctx.lineTo(CAT_RADIUS_X, -CAT_RADIUS_Y);
-    ctx.lineTo(-CAT_RADIUS_X, -CAT_RADIUS_Y);
-    ctx.fill();
-
-    // Bandana
-    ctx.fillStyle = '#b12a34';
-    ctx.fillRect(-CAT_RADIUS_X, -CAT_RADIUS_Y, CAT_RADIUS_X * 2, BANDANA_HEIGHT);
 
     ctx.fillStyle = '#fff';
 
@@ -115,4 +135,14 @@ renderCat = (ctx, paws) => {
     );
 
     ctx.stroke();
+};
+
+renderDeath = (ctx, x, y) => {
+    ctx.fillStyle = '#b12a34';
+
+    [Math.PI / 4, -Math.PI / 4].forEach((angle) => ctx.wrap(() => {
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.fillRect(-15, -4, 30, 8);
+    }));
 };
