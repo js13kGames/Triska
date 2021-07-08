@@ -51,7 +51,7 @@ class Player {
         this.y += this.vY * elapsed;
         this.y = Math.min(0, this.y);
 
-        if (MOUSE_DOWN && !WAIT_FOR_RELEASE && (this.onWall || !this.direction)) {
+        if (!MENU && MOUSE_DOWN && !WAIT_FOR_RELEASE && (this.onWall || !this.direction)) {
             this.jump();
             WAIT_FOR_RELEASE = true;
         }

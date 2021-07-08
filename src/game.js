@@ -170,8 +170,8 @@ cycle = (elapsed) => {
 generateNewObstacle = () => {
     const lastObstacleY = OBSTACLES.length ? OBSTACLES[OBSTACLES.length - 1].y : CONFIG.obstaclesStartY;
 
-    const difficulty = Math.min(1, OBSTACLES.length / 40);
-    const minSpacing = CONFIG.obstacleRadiusY * 2 + 200 + (1 - difficulty) * 500;
+    const difficulty = Math.min(1, OBSTACLES.length / 20);
+    const minSpacing = CONFIG.obstacleRadiusY * 2 + 200 + (1 - difficulty) * 400;
     const extraSpacing = (1 - difficulty) * 500;
 
     OBSTACLES.push(new Obstacle(
