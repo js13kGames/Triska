@@ -110,21 +110,28 @@ class Player {
                     trail.direction,
                     1,
                     trail.rotation,
+                    false,
                 );
             }
         });
 
+        let x = this.x;
+        if (this.onWall) {
+            x += Math.sign(CONFIG.width / 2 - this.x) * 18;
+        }
+
         this.renderPlayer(
-            this.x,
+            x,
             this.y,
             1,
             this.direction,
             this.dead ? -1 : 1,
             this.rotation,
+            this.onWall,
         );
     }
 
-    renderPlayer(x, y, alpha, scaleX, scaleY, rotation) {
+    renderPlayer(x, y, alpha, scaleX, scaleY, rotation, paws) {
         CTX.wrap(() => {
             CTX.translate(x, y);
             CTX.rotate(rotation);
@@ -132,15 +139,7 @@ class Player {
             CTX.globalAlpha = Math.max(0, Math.min(1, alpha));
 
 
-            renderCat(CTX);
-
-            // CTX.fillStyle = '#000';
-            // CTX.fillRect(
-            //     -CONFIG.playerRadius,
-            //     -CONFIG.playerRadius,
-            //     CONFIG.playerRadius * 2,
-            //     CONFIG.playerRadius * 2,
-            // );
+            renderCat(CTX, paws);
         });
     }
 }

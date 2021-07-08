@@ -34,7 +34,7 @@ BACKGROUND_PATTERN = createPattern(640, 400, (ctx) => {
     ctx.fillRect(400, 150, -10, 10);
 });
 
-renderCat = (ctx) => {
+renderCat = (ctx, paws) => {
     const CAT_RADIUS_X = 15;
     const CAT_RADIUS_Y = 20;
     const BANDANA_HEIGHT = 15;
@@ -42,9 +42,17 @@ renderCat = (ctx) => {
     const X_RADIUS = 5;
     const WHISKER_LENGTH = 24;
 
+    // Body
     ctx.fillStyle = ctx.strokeStyle = '#000';
     ctx.fillRect(-CAT_RADIUS_X, -CAT_RADIUS_Y, CAT_RADIUS_X * 2, CAT_RADIUS_Y * 2);
 
+    // Paws
+    if (paws) {
+        ctx.fillRect(0, 0, CAT_RADIUS_X + 5, 4);
+        ctx.fillRect(0, 12, CAT_RADIUS_X + 5, 4);
+    }
+
+    // Whiskers
     [-1, 1].forEach((sign) => ctx.wrap(() => {
         ctx.translate(0, -CAT_RADIUS_Y + BANDANA_HEIGHT);
 
@@ -58,17 +66,20 @@ renderCat = (ctx) => {
         ctx.stroke();
     }));
 
+    // Ears
     ctx.beginPath();
     ctx.arc(0, -CAT_RADIUS_Y - CAT_RADIUS_X, CAT_RADIUS_X, Math.PI, 0, true);
     ctx.lineTo(CAT_RADIUS_X, -CAT_RADIUS_Y);
     ctx.lineTo(-CAT_RADIUS_X, -CAT_RADIUS_Y);
     ctx.fill();
 
+    // Bandana
     ctx.fillStyle = '#b12a34';
     ctx.fillRect(-CAT_RADIUS_X, -CAT_RADIUS_Y, CAT_RADIUS_X * 2, BANDANA_HEIGHT);
 
     ctx.fillStyle = '#fff';
 
+    // Eyes
     [-EYE_GAP, EYE_GAP].forEach((x) => ctx.wrap(() => {
         ctx.translate(x, -CAT_RADIUS_Y + BANDANA_HEIGHT / 2 + 2);
         // ctx.scale(0.5, 1);
@@ -83,20 +94,20 @@ renderCat = (ctx) => {
         ctx.fill();
     }));
 
+    // Snoot
     ctx.beginPath();
     ctx.arc(0, -CAT_RADIUS_Y + BANDANA_HEIGHT, 2, 0, Math.PI * 2, true);
     ctx.fill();
 
+    // Tail
     const tipX = Math.sin(Date.now() / 1000 * Math.PI * 2 / 2) * 3;
     ctx.strokeStyle = '#000';
     ctx.lineWidth = 5;
     ctx.lineCap = 'round';
     ctx.beginPath();
     ctx.moveTo(0, CAT_RADIUS_Y - ctx.lineWidth);
-    // ctx.lineTo(-23, CAT_RADIUS_Y - 6);
-    // ctx.lineTo(-25, CAT_RADIUS_Y - 20);
     ctx.bezierCurveTo(
-        -25, CAT_RADIUS_Y - 6,
+        -25, CAT_RADIUS_Y + 2,
         -25, CAT_RADIUS_Y - 10,
         -25 + tipX, CAT_RADIUS_Y - 18,
     );
