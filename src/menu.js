@@ -24,18 +24,27 @@ class Button {
 class Menu {
     constructor() {
         this.buttons = [];
+        this.fade(0, 1);
+    }
+
+    fade(fromValue, toValue) {
+        this.fadeStartTime = Date.now();
+        this.fadeEndTime = Date.now() + CONFIG.menuFadeDuration * 1000;
+        this.fadeStartValue = fromValue;
+        this.fadeEndValue = toValue;
     }
 
     get alpha() {
-        if (!this.dismissed) return 1;
+        let progress = (Date.now() - this.fadeStartTime) / (this.fadeEndTime - this.fadeStartTime);
+        progress = Math.min(1, Math.max(0, progress));
 
-        return Math.max(0, (this.fadeEndTime - Date.now()) / (CONFIG.menuFadeDuration * 1000));
+        return progress * (this.fadeEndValue - this.fadeStartValue) + this.fadeStartValue;
     }
 
     dismiss() {
         if (!this.dismissed) {
             this.dismissed = true;
-            this.fadeEndTime = Date.now() + CONFIG.menuFadeDuration * 1000;
+            this.fade(1, 0);
             setTimeout(() => MENU = null, CONFIG.menuFadeDuration * 1000);
         }
     }

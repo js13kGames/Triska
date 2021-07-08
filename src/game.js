@@ -111,6 +111,7 @@ renderFrame = () => {
 resetGame = () => {
     resetPlayer();
     MENU = new MainMenu();
+    MENU.fadeStartTime = 0;
 };
 
 resetPlayer = () => {
