@@ -15,8 +15,10 @@ const CONFIG = {
 
     'obstacleRadiusX': 20,
     'obstacleRadiusY': 40,
-    'obstaclesStartY': -400,
+    'obstaclesStartY': -800,
     'obstacleSpikeCount': 5,
 
     'trailFadeDuration': 0.3,
+
+    'menuFadeDuration': 0.3,
 };

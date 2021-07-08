@@ -17,9 +17,6 @@ createPattern = (width, height, render) => {
 };
 
 BACKGROUND_PATTERN = createPattern(640, 400, (ctx) => {
-    ctx.fillStyle = '#c8caca';
-    ctx.fillRect(0, 0, 640, 400);
-
     ctx.fillStyle = '#bbbcbc';
     ctx.fillRect(100, 0, -10, 20);
     ctx.fillRect(100, 0, 30, 400);

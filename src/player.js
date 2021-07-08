@@ -80,6 +80,8 @@ class Player {
         this.direction = Math.sign((CONFIG.width / 2 - this.x));
 
         CAMERA_SHAKE_END = Date.now() + CONFIG.shakeDuration * 1000;
+
+        setTimeout(() => MENU = new MainMenu(), 1000);
     }
 
     get onWall() {
@@ -100,6 +102,17 @@ class Player {
     }
 
     render() {
+        if (!this.direction) {
+            CTX.wrap(() => {
+                CTX.globalAlpha = Math.max(0, (GAME_DURATION - 1) / 0.3);
+                CTX.fillStyle = '#888';
+                CTX.textBaseline = 'middle';
+                CTX.textAlign = 'center';
+                CTX.font = '24pt Courier';
+                CTX.fillText('CLICK TO JUMP', this.x, this.y - 300);
+            });
+        }
+
         this.trails.forEach((trail) => {
             const alpha = trail.alpha;
             if (alpha > 0) {
@@ -124,7 +137,7 @@ class Player {
             x,
             this.y,
             1,
-            this.direction,
+            this.direction || 1,
             this.dead ? -1 : 1,
             this.rotation,
             this.onWall,
@@ -136,8 +149,7 @@ class Player {
             CTX.translate(x, y);
             CTX.rotate(rotation);
             CTX.scale(scaleX, scaleY);
-            CTX.globalAlpha = Math.max(0, Math.min(1, alpha));
-
+            CTX.globalAlpha *= Math.max(0, Math.min(1, alpha));
 
             renderCat(CTX, paws);
         });

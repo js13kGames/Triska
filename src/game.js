@@ -7,7 +7,7 @@ onload = () => {
 
     CTX = CANVAS.getContext('2d');
 
-    resetPlayer();
+    resetGame();
 
     onresize();
 
@@ -41,12 +41,24 @@ animationFrame = () => {
     requestAnimationFrame(animationFrame);
 };
 
-onclick = () => {
-    PLAYER.jump();
+onclick = (e) => {
+    if (MENU) {
+        const rect = CANVAS.getBoundingClientRect();
+        const x = (e.pageX - rect.left) / rect.width * CONFIG.width;
+        const y = (e.pageY - rect.top) / rect.height * CONFIG.height;
+
+        MENU.buttons.forEach((b) => {
+            if (Math.abs(b.x - x) < b.radiusX && Math.abs(b.y - y) < b.radiusY) {
+                b.onClick();
+            }
+        })
+    } else {
+        PLAYER.jump();
+    }
 };
 
 renderFrame = () => {
-    CTX.fillStyle = '#fff';
+    CTX.fillStyle = '#000';
     CTX.fillRect(0, 0, CONFIG.width, CONFIG.height);
 
     CTX.wrap(() => {
@@ -64,22 +76,33 @@ renderFrame = () => {
         CTX.fillRect(0, CAMERA.topY, CONFIG.wallX, CONFIG.height);
         CTX.fillRect(CONFIG.width, CAMERA.topY, -CONFIG.wallX, CONFIG.height);
 
-        // Background
+        // Background color
+        CTX.fillStyle = Date.now() < CAMERA_SHAKE_END ? '#900' : '#c8caca';
+        CTX.fillRect(CONFIG.wallX, CAMERA.topY, CONFIG.width - CONFIG.wallX * 2, CONFIG.height);
+
+        // Background trees
         CTX.fillStyle = BACKGROUND_PATTERN;
         CTX.fillRect(CONFIG.wallX, CAMERA.topY, CONFIG.width - CONFIG.wallX * 2, CONFIG.height);
+
+        // Obstacles
+        OBSTACLES.forEach((o) => o.render());
+
+        if (MENU) CTX.globalAlpha = 1 - MENU.alpha;
 
         // Ground
         CTX.fillStyle = '#000';
         CTX.fillRect(0, CONFIG.playerRadius, CONFIG.width, CONFIG.groundHeight);
 
-        // Obstacles
-        OBSTACLES.forEach((o) => o.render());
-
         // Player
         PLAYER.render();
     });
 
-    renderMainMenu();
+    if (MENU) CTX.wrap(() => MENU.render());
+};
+
+resetGame = () => {
+    resetPlayer();
+    MENU = new MainMenu();
 };
 
 resetPlayer = () => {
@@ -89,6 +112,12 @@ resetPlayer = () => {
 };
 
 cycle = (elapsed) => {
+    if (!MENU || MENU.dismissed) {
+        GAME_DURATION += elapsed;
+    } else {
+        GAME_DURATION = 0;
+    }
+
     PLAYER.cycle(elapsed);
     CAMERA.cycle(elapsed);
 
