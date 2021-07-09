@@ -174,8 +174,20 @@ generateNewObstacle = () => {
     const minSpacing = CONFIG.obstacleRadiusY * 2 + 200 + (1 - difficulty) * 400;
     const extraSpacing = (1 - difficulty) * 500;
 
-    OBSTACLES.push(new Obstacle(
-        RNG() < 0.5 ? CONFIG.wallX : CONFIG.width - CONFIG.wallX,
-        lastObstacleY - (RNG() * minSpacing + extraSpacing),
-    ));
+    const doubleProbability = difficulty * 0.2;
+
+    const xRng = RNG() < 0.5;
+
+    const obstacle = new Obstacle(
+        xRng ? CONFIG.wallX : CONFIG.width - CONFIG.wallX,
+        lastObstacleY - (RNG() * extraSpacing + minSpacing),
+    );
+    OBSTACLES.push(obstacle);
+
+    if (RNG() < doubleProbability) {
+        OBSTACLES.push(new Obstacle(
+            !xRng ? CONFIG.wallX : CONFIG.width - CONFIG.wallX,
+            obstacle.y,
+        ));
+    }
 };
