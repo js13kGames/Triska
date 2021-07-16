@@ -163,3 +163,13 @@ renderDeath = (ctx, x, y) => {
         ctx.fillRect(-15, -4, 30, 8);
     }));
 };
+
+renderSpark = (ctx, x, y) => {
+    ctx.fillStyle = '#ff0';
+
+    [Math.PI / 4, -Math.PI / 4].forEach((angle) => ctx.wrap(() => {
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.fillRect(-5, -2, 10, 4);
+    }));
+};

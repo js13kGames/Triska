@@ -53,11 +53,34 @@ class MainMenu extends Menu {
 
         CTX.wrap(() => {
             CTX.translate(CONFIG.width - 120, CONFIG.height - 50);
-            CTX.scale(3, 3);
-
             CTX.translate(0, (1 - this.alpha) * 100);
 
-            renderCat(CTX, false, DEATHS.length > 0 && Date.now() - this.created < 4000);
+            const dizzy = DEATHS.length > 0 && Date.now() - this.created < 4000;
+            if (dizzy) {
+                CTX.rotate(Math.sin(Date.now() / 1000 * Math.PI * 2 / 2) * Math.PI / 32);
+            }
+
+            CTX.wrap(() => {
+                CTX.scale(3, 3);
+                renderCat(CTX, false, dizzy);
+            });
+
+            if (dizzy) {
+                const rng = createNumberGenerator(1);
+
+                const count = 5;
+                for (let i = 0 ; i < count ; i++) {
+                    CTX.wrap(() => {
+                        const ratio = i / count;
+                        CTX.translate(0, -80);
+
+                        const angle = ratio * Math.PI * 2 + Date.now() / 1000 * Math.PI;
+                        CTX.translate(Math.cos(angle) * 40, Math.sin(angle) * 10);
+                        renderSpark(CTX, 0, 0);
+                    });
+                }
+
+            }
         });
     }
 }
