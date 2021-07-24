@@ -16,6 +16,31 @@ class MainMenu extends Menu {
     }
 
     render() {
+        const lastScore = DEATHS.length ? DEATHS[DEATHS.length - 1].distance : 0;
+        const newHighscore = lastScore >= highscore();
+
+        const rng = createNumberGenerator(1);
+        for (let i = 0 ; i < 100 * newHighscore ; i++) {
+            CTX.wrap(() => {
+                const startY = -rng() * CONFIG.height * 2;
+                const speed = 200 + rng() * 200;
+                const rotationSpeed = Math.PI + rng() * Math.PI + (rng() < 0.5 ? 1 : -1);
+
+                CTX.fillStyle = CONFIG.confettiColors[~~(rng() * CONFIG.confettiColors.length)];
+                CTX.translate(
+                    CONFIG.wallX + rng() * (CONFIG.width - CONFIG.wallX * 2),
+                    startY + speed * (Date.now() - this.created) / 1000,
+                );
+                CTX.rotate(rotationSpeed * (Date.now() - this.created) / 1000);
+                CTX.scale(10, 10);
+                CTX.beginPath();
+                CTX.moveTo(-1, -1);
+                CTX.lineTo(1, -1);
+                CTX.lineTo(-1, 1);
+                CTX.fill();
+            });
+        }
+
         super.render();
 
         // CTX.globalAlpha = Math.max(0, (GAME_DURATION - 1) / 0.3);
@@ -48,8 +73,7 @@ class MainMenu extends Menu {
                 CTX.textAlign = 'center';
                 CTX.font = '24pt Courier';
 
-                const lastScore = DEATHS[DEATHS.length - 1].distance;
-                if (lastScore >= highscore()) {
+                if (newHighscore) {
                     CTX.fillText(`NEW RECORD! ${lastScore}M`, 0, 0);
 
                     CTX.font = '8pt Courier';

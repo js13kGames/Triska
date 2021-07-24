@@ -24,4 +24,6 @@ const CONFIG = {
     'menuFadeDuration': 0.3,
 
     'pxPerMeter': 100,
+
+    'confettiColors': ['#f00', '#ff0', '#08f', '#0f0'],
 };
