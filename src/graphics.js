@@ -231,3 +231,49 @@ renderGauge = (ctx, value) => {
         ctx.fillRect(-100, -10, 200 * value, 20);
     });
 };
+
+renderJs13kBadge = (ctx) => ctx.wrap(() => {
+    ctx.rotate(Math.PI / 8);
+
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(0, 0, 55, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = '#3b3b3b';
+    ctx.beginPath();
+    ctx.arc(0, 0, 50, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.font = '14pt Courier';
+    ctx.textBaseline = 'bottom';
+    ctx.textAlign = 'left';
+
+    const jsWidth = ctx.measureText('JS').width;
+    const limitWidth = ctx.measureText('13K').width;
+
+    ctx.wrap(() => {
+        ctx.translate(0, 15);
+
+        ctx.fillStyle = '#fff';
+        ctx.fillText('JS', -(jsWidth + limitWidth) / 2, 0);
+
+        ctx.fillStyle = '#c13e43';
+        ctx.fillText('13K', -(jsWidth + limitWidth) / 2 + jsWidth, 0);
+
+        ctx.fillStyle = '#fff';
+        ctx.textAlign = 'center';
+        ctx.fillText('GAMES', 0, 20);
+    });
+
+    ctx.translate(0, -25);
+    ctx.fillStyle = '#c13e43';
+    ctx.fillRect(-15, -5, 30, 10);
+
+    [-1, 1].forEach((sign) => ctx.wrap(() => {
+        ctx.translate(10 * sign, 0);
+        ctx.fillStyle = '#c13e43';
+        ctx.rotate(Math.PI / 8 * -sign);
+        ctx.fillRect(-5, -5, 10, 20);
+    }));
+});

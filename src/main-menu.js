@@ -12,6 +12,27 @@ class MainMenu extends Menu {
             },
         ));
 
+        const js13kButton = new Button(
+            CONFIG.width - 75,
+            60,
+            '',
+            () => {
+                open('https://js13kgames.com/');
+            },
+        );
+        js13kButton.radiusX = 50;
+        js13kButton.radiusY = 50;
+        js13kButton.render = function() {
+            CTX.translate(this.x, this.y);
+
+            if (this.contains(MOUSE_POSITION)) {
+                CTX.scale(1.1, 1.1);
+            }
+
+            renderJs13kBadge(CTX);
+        };
+        this.buttons.push(js13kButton);
+
         const lastScore = DEATHS.length ? DEATHS[DEATHS.length - 1].distance : 0;
         if (lastScore) {
             this.buttons.push(new Button(
