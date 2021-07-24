@@ -12,6 +12,24 @@ class MainMenu extends Menu {
             },
         ));
 
+        const lastScore = DEATHS.length ? DEATHS[DEATHS.length - 1].distance : 0;
+        if (lastScore) {
+            this.buttons.push(new Button(
+                CONFIG.width / 2,
+                CONFIG.height / 2 + 125,
+                'BRAG ABOUT IT',
+                () => {
+                    const message = `I climbed ${lastScore}m in ${document.title}!`;
+                    open(
+                        'https://twitter.com/intent/tweet?' +
+                        'hashtags=js13k' +
+                        '&url=' + location +
+                        '&text=' + encodeURIComponent(message)
+                    );
+                },
+            ));
+        }
+
         this.created = Date.now();
     }
 

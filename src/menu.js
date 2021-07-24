@@ -5,7 +5,13 @@ class Button {
         this.text = text;
         this.onClick = onClick;
 
-        this.radiusX = 100;
+        CTX.fillStyle = '#fff';
+        CTX.textBaseline = 'middle';
+        CTX.textAlign = 'center';
+        CTX.font = '24pt Courier';
+        const width = CTX.measureText(text).width;
+
+        this.radiusX = Math.max(100, (width + 50) / 2);
         this.radiusY = 25;
     }
 
