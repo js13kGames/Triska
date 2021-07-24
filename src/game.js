@@ -111,6 +111,7 @@ renderFrame = () => {
 
         // Obstacles
         OBSTACLES.forEach((o) => o.render());
+        ITEMS.forEach((i) => i.render());
 
         DEATHS.forEach(death => renderDeath(CTX, death.x, death.y));
 
@@ -131,6 +132,18 @@ renderFrame = () => {
         CTX.textAlign = 'left';
         CTX.font = '18pt Courier';
         CTX.fillText(`${PLAYER.distance}M`, CONFIG.wallX + 15, 15);
+
+        CTX.wrap(() => {
+            CTX.translate(CONFIG.width / 2, 25);
+
+            const scale = 1 + Math.min(0.1, Math.abs(RENDERED_POWER - PLAYER.power));
+
+            if (RENDERED_POWER < PLAYER.power) {
+                CTX.scale(scale, scale);
+            }
+
+            renderGauge(CTX, RENDERED_POWER);
+        });
     }
 
     if (MENU) CTX.wrap(() => MENU.render());
@@ -146,6 +159,7 @@ resetPlayer = () => {
     PLAYER = new Player();
     CAMERA = new Camera();
     OBSTACLES = [];
+    ITEMS = [];
 };
 
 cycle = (elapsed) => {
@@ -161,6 +175,10 @@ cycle = (elapsed) => {
 
     PLAYER.cycle(elapsed);
     CAMERA.cycle(elapsed);
+    ITEMS.forEach(i => i.cycle(elapsed));
+
+    const appliedDiff = Math.max(-elapsed * 0.5, Math.min(elapsed * 0.5, PLAYER.power - RENDERED_POWER));
+    RENDERED_POWER += appliedDiff;
 
     if (!OBSTACLES.length || OBSTACLES[OBSTACLES.length - 1].y >= CAMERA.topY) {
         generateNewObstacle();
@@ -188,6 +206,13 @@ generateNewObstacle = () => {
         OBSTACLES.push(new Obstacle(
             !xRng ? CONFIG.wallX : CONFIG.width - CONFIG.wallX,
             obstacle.y,
+        ));
+    }
+
+    if (RNG() < 0.5) {
+        ITEMS.push(new Item(
+            CONFIG.wallX * 2 + RNG() * (CONFIG.width - CONFIG.wallX * 4),
+            obstacle.y + RNG() * 100,
         ));
     }
 };

@@ -20,6 +20,9 @@ class Player {
         this.direction = 0;
         this.dead = 0;
         this.rotation = 0;
+        this.power = 0;
+
+        this.superLucky = false;
 
         this.minY = this.y;
 
@@ -32,6 +35,14 @@ class Player {
             velocityX *= 0.2;
         }
 
+        if (this.superLucky) {
+            this.power -= elapsed * 0.5;
+            if (this.power <= 0) {
+                this.power = 0;
+                this.superLucky = false;
+            }
+        }
+
         this.x += this.direction * velocityX * elapsed;
         this.x = Math.max(CONFIG.wallX, this.x);
         this.x = Math.min(CONFIG.width - CONFIG.wallX, this.x);
@@ -41,7 +52,7 @@ class Player {
             gravity *= 4;
         } else if (this.onWall) {
             gravity *= 0.5;
-        } else if (MOUSE_DOWN) {
+        } else if (MOUSE_DOWN || this.superLucky) {
             gravity *= 0;
         }
 
@@ -51,7 +62,8 @@ class Player {
         this.y += this.vY * elapsed;
         this.y = Math.min(0, this.y);
 
-        if (!MENU && MOUSE_DOWN && !WAIT_FOR_RELEASE && (this.onWall || !this.direction)) {
+        const shouldJump = !MENU && (this.superLucky || MOUSE_DOWN && !WAIT_FOR_RELEASE) && (this.onWall || !this.direction);
+        if (shouldJump) {
             this.jump();
             WAIT_FOR_RELEASE = true;
         }
@@ -73,7 +85,7 @@ class Player {
         }
 
         for (const obstacle of OBSTACLES) {
-            if (obstacle.collidesWithPlayer()) {
+            if (obstacle.collidesWithPlayer() && !this.superLucky) {
                 this.die();
             }
         }

@@ -15,6 +15,7 @@ const files = [
     'src/utils.js',
     'src/game.js',
     'src/camera.js',
+    'src/item.js',
     'src/player.js',
     'src/obstacle.js',
     'src/menu.js',

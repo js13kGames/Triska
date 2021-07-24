@@ -173,3 +173,42 @@ renderSpark = (ctx, x, y) => {
         ctx.fillRect(-5, -2, 10, 4);
     }));
 };
+
+renderClover = (ctx, x, y) => {
+    ctx.fillStyle = ctx.strokeStyle = '#b12a34';
+
+    ctx.wrap(() => {
+        ctx.translate(x, y);
+
+        [0.25, 0.75, -0.25, -0.75].forEach((ratio, i) => {
+            const angle = ratio * Math.PI;
+
+            ctx.wrap(() => {
+                ctx.rotate(angle);
+                ctx.beginPath();
+                ctx.moveTo(0, 3);
+                ctx.lineTo(0, -3);
+                ctx.lineTo(10, -5);
+                ctx.lineTo(10, 5);
+                ctx.fill();
+            });
+        });
+
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(0, 20, 3, 15, 5, 20);
+        ctx.stroke();
+    });
+};
+
+renderGauge = (ctx, value) => {
+    ctx.wrap(() => {
+        // ctx.translate(CONFIG.width / 2, 50);
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(-100, -10, 200, 20);
+
+        ctx.fillStyle = '#b12a34';
+        ctx.fillRect(-100, -10, 200 * value, 20);
+    });
+};
