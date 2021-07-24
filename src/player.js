@@ -98,6 +98,8 @@ class Player {
 
         DEATHS.push({'x': this.x, 'y': this.y, 'distance': this.distance})
         setTimeout(() => MENU = new MainMenu(), 1000);
+
+        updateHighscore(this.distance);
     }
 
     get onWall() {

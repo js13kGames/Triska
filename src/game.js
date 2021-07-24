@@ -191,3 +191,11 @@ generateNewObstacle = () => {
         ));
     }
 };
+
+updateHighscore = (score) => {
+    localStorage['hs'] = Math.max(highscore(), score);
+};
+
+highscore = () => {
+    return parseInt(localStorage['hs']) || 0;
+};

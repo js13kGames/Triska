@@ -47,7 +47,21 @@ class MainMenu extends Menu {
                 CTX.textBaseline = 'middle';
                 CTX.textAlign = 'center';
                 CTX.font = '24pt Courier';
-                CTX.fillText(`SCORE: ${DEATHS[DEATHS.length - 1].distance}M`, 0, 0);
+
+                const lastScore = DEATHS[DEATHS.length - 1].distance;
+                if (lastScore >= highscore()) {
+                    CTX.fillText(`NEW RECORD! ${lastScore}M`, 0, 0);
+
+                    CTX.font = '8pt Courier';
+                    CTX.translate(0, 25);
+                    CTX.fillText(`(BUT REALLY, YOU COULD HAVE GONE HIGHER)`, 0, 0);
+                } else {
+                    CTX.fillText(`YOU CLIMBED ${lastScore}M!`, 0, 0);
+
+                    CTX.font = '8pt Courier';
+                    CTX.translate(0, 25);
+                    CTX.fillText(`(YOU ONCE DID ${highscore()}M THOUGH)`, 0, 0);
+                }
             }
         });
 
