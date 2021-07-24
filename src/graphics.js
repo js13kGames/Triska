@@ -175,10 +175,29 @@ renderSpark = (ctx, x, y) => {
 };
 
 renderClover = (ctx, x, y) => {
-    ctx.fillStyle = ctx.strokeStyle = '#b12a34';
 
     ctx.wrap(() => {
         ctx.translate(x, y);
+
+        const gradient = ctx.createLinearGradient(-50, 0, 50, 0);
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0)');
+        gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.5)');
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        [
+            GAME_DURATION * Math.PI,
+            -GAME_DURATION * Math.PI / 3,
+            GAME_DURATION * Math.PI * 2 / 3,
+        ].forEach((angle) => ctx.wrap(() => {
+            ctx.fillStyle = gradient;
+            ctx.rotate(angle);
+            ctx.fillRect(-50, -10, 100, 20);
+        }));
+
+        ctx.fillStyle = ctx.strokeStyle = '#b12a34';
+
+        const scale = 1.2 + Math.sin(Math.PI * 2 * Date.now() / 1000) * 0.2;
+        ctx.scale(scale, scale);
+        ctx.rotate(Math.sin(Math.PI * Date.now() / 1000) * Math.PI / 16);
 
         [0.25, 0.75, -0.25, -0.75].forEach((ratio, i) => {
             const angle = ratio * Math.PI;
