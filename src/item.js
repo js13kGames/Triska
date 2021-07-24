@@ -5,7 +5,7 @@ class Item {
     }
 
     cycle(elapsed) {
-        if (Math.abs(PLAYER.x - this.x) > 20 || Math.abs(PLAYER.y - this.y) > 20) {
+        if (Math.abs(PLAYER.x - this.x) > 20 || Math.abs(PLAYER.y - this.y) > 20 || PLAYER.dead) {
             return;
         }
 
@@ -15,7 +15,6 @@ class Item {
         }
 
         PLAYER.power += 0.34;
-        PLAYER.power += 34;
 
         if (PLAYER.power >= 1) {
             PLAYER.power = 1;
@@ -24,6 +23,7 @@ class Item {
     }
 
     render() {
+        if (MENU) return;
         renderClover(CTX, this.x, this.y);
     }
 }

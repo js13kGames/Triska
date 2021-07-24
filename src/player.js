@@ -20,8 +20,9 @@ class Player {
         this.direction = 0;
         this.dead = 0;
         this.rotation = 0;
-        this.power = 0;
 
+        this.power = 0;
+        this.timeSinceSuperLucky = 9;
         this.superLucky = false;
 
         this.minY = this.y;
@@ -41,6 +42,10 @@ class Player {
                 this.power = 0;
                 this.superLucky = false;
             }
+
+            this.timeSinceSuperLucky = 0;
+        } else {
+            this.timeSinceSuperLucky += elapsed;
         }
 
         this.x += this.direction * velocityX * elapsed;
@@ -85,7 +90,7 @@ class Player {
         }
 
         for (const obstacle of OBSTACLES) {
-            if (obstacle.collidesWithPlayer() && !this.superLucky) {
+            if (obstacle.collidesWithPlayer()) {
                 this.die();
             }
         }

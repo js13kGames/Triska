@@ -5,29 +5,46 @@ class Obstacle {
     }
 
     collidesWithPlayer() {
+        if (PLAYER.timeSinceSuperLucky < CONFIG.superLuckyRecoveryTime) {
+            return false;
+        }
+
         return Math.abs(PLAYER.x - this.x) < CONFIG.obstacleRadiusX &&
             Math.abs(PLAYER.y - this.y) < CONFIG.obstacleRadiusY
     }
 
     render() {
-        CTX.fillStyle = '#000';
+        let addedX = 0;
+        if (PLAYER.timeSinceSuperLucky < CONFIG.superLuckyRecoveryTime) {
+            addedX = CONFIG.obstacleRadiusX * (CONFIG.superLuckyRecoveryTime - PLAYER.timeSinceSuperLucky) / CONFIG.superLuckyRecoveryTime;
 
-        CTX.beginPath();
-
-        const halfSpikeHeight = CONFIG.obstacleRadiusY / CONFIG.obstacleSpikeCount;
-        for (let y = this.y - CONFIG.obstacleRadiusY ; y < this.y + CONFIG.obstacleRadiusY ; y += halfSpikeHeight * 2) {
-            CTX.lineTo(
-                this.x,
-                y,
-            );
-            CTX.lineTo(
-                this.x + CONFIG.obstacleRadiusX * Math.sign(CONFIG.width / 2 - this.x),
-                y + halfSpikeHeight,
-            );
+            const period = 0.2;
+            if (PLAYER.timeSinceSuperLucky % period > period / 2) {
+                return;
+            }
         }
 
-        CTX.lineTo(this.x, this.y + CONFIG.obstacleRadiusY);
+        CTX.fillStyle = '#000';
 
-        CTX.fill();
+        CTX.wrap(() => {
+            CTX.translate(addedX * Math.sign(this.x - CONFIG.width / 2), 0);
+            CTX.beginPath();
+
+            const halfSpikeHeight = CONFIG.obstacleRadiusY / CONFIG.obstacleSpikeCount;
+            for (let y = this.y - CONFIG.obstacleRadiusY ; y < this.y + CONFIG.obstacleRadiusY ; y += halfSpikeHeight * 2) {
+                CTX.lineTo(
+                    this.x,
+                    y,
+                );
+                CTX.lineTo(
+                    this.x + CONFIG.obstacleRadiusX * Math.sign(CONFIG.width / 2 - this.x),
+                    y + halfSpikeHeight,
+                );
+            }
+
+            CTX.lineTo(this.x, this.y + CONFIG.obstacleRadiusY);
+
+            CTX.fill();
+        });
     }
 }
