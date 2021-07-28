@@ -14,6 +14,10 @@ class Obstacle {
     }
 
     render() {
+        if (CAMERA.bottomY < this.y - CONFIG.obstacleRadiusY || CAMERA.y > this.y + CONFIG.obstacleRadiusY) {
+            return;
+        }
+
         let addedX = 0;
         if (PLAYER.timeSinceSuperLucky < CONFIG.superLuckyRecoveryTime) {
             addedX = CONFIG.obstacleRadiusX * (CONFIG.superLuckyRecoveryTime - PLAYER.timeSinceSuperLucky) / CONFIG.superLuckyRecoveryTime;

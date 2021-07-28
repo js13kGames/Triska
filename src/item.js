@@ -24,6 +24,9 @@ class Item {
 
     render() {
         if (MENU) return;
+        if (CAMERA.bottomY < this.y - 50 || CAMERA.y > this.y + 50) {
+            return;
+        }
         renderClover(CTX, this.x, this.y);
     }
 }
