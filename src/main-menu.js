@@ -56,7 +56,7 @@ class MainMenu extends Menu {
 
     render() {
         const lastScore = DEATHS.length ? DEATHS[DEATHS.length - 1].distance : 0;
-        const newHighscore = lastScore >= highscore();
+        const newHighscore = lastScore >= highscore() && lastScore;
 
         const rng = createNumberGenerator(1);
         for (let i = 0 ; i < 100 * newHighscore ; i++) {
