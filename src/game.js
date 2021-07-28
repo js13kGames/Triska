@@ -39,12 +39,15 @@ animationFrame = () => {
     requestAnimationFrame(animationFrame);
 };
 
-onmousedown = () => MOUSE_DOWN = true;
-onmouseup = () => MOUSE_DOWN = false;
+onmousedown = onkeydown = () => MOUSE_DOWN = true;
+onmouseup = ontouchcancel = onkeyup = () => MOUSE_DOWN = false;
 
-// Pretend keys are the same as clicking
-onkeydown = () => MOUSE_DOWN = true;
-onkeyup = () => MOUSE_DOWN = false;
+ontouchstart = (e) => {
+    onmousemove(e.touches[0]);
+    onmousedown(e);
+};
+
+ontouchend = (e) => onclick(e.touches[0]);
 
 onmousemove = (e) => {
     const rect = CANVAS.getBoundingClientRect();

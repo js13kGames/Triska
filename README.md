@@ -7,4 +7,4 @@ npm install
 npm run build
 ```
 
-The game should then be in `dist/`, and in `game.zip`.
+The game should then be in `docs/`, and in `game.zip`.
