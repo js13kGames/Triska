@@ -29,18 +29,18 @@ const files = [
             return readFile(file);
         }));
 
-        await del('dist/');
+        await del('docs/');
         await del('game.zip');
-        await mkdir('dist/');
+        await mkdir('docs/');
 
-        await copyFile('src/style.css', 'dist/style.css');
-        await copyFile('src/index.html', 'dist/index.html');
+        await copyFile('src/style.css', 'docs/style.css');
+        await copyFile('src/index.html', 'docs/index.html');
 
         const minified = await minify(allContents.map((buffer) => {
             return buffer.toString();
         }).join('\n'));
 
-        await writeFile('dist/index.js', minified.code);
+        await writeFile('docs/index.js', minified.code);
 
         await new Promise((resolve, reject) => {
             const output = fs.createWriteStream('game.zip');
@@ -50,7 +50,7 @@ const files = [
             const archive = archiver('zip', {
                 zlib: { level: 9 }
             });
-            archive.directory('dist/', false);
+            archive.directory('docs/', false);
             archive.pipe(output);
             archive.finalize();
         })
