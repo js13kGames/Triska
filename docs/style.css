@@ -1,10 +1,15 @@
 * {
     margin: 0;
     padding: 0;
+
+    user-select: none; /* supported by Chrome and Opera */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
 }
 
 body {
     background: #000;
+    overflow: hidden;
 }
 
 #can {
@@ -20,7 +25,7 @@ body {
 }
 
 #inner {
-    
+
 }
 
 #container {

@@ -47,7 +47,12 @@ ontouchstart = (e) => {
     onmousedown(e);
 };
 
-ontouchend = (e) => onclick(e.touches[0]);
+ontouchmove = (e) => e.preventDefault();
+
+ontouchend = (e) => {
+    onmouseup();
+    onclick();
+}
 
 onmousemove = (e) => {
     const rect = CANVAS.getBoundingClientRect();
@@ -63,7 +68,7 @@ onmousemove = (e) => {
     }
 };
 
-onclick = (e) => {
+onclick = () => {
     if (MENU) {
         const button = MENU.highlightedButton(MOUSE_POSITION);
         if (button) button.onClick();
