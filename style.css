@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+
+    user-select: none; /* supported by Chrome and Opera */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+}
+
+body {
+    background: #000;
+    overflow: hidden;
+}
+
+#can {
+    width: 100%;
+    height: 100%;
+}
+
+#outer {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+}
+
+#inner {
+
+}
+
+#container {
+    padding-top: 133%;
+}
